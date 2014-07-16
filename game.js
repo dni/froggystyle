@@ -2,10 +2,17 @@ var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaser-example', { preload
 
 function preload() {
 
+<<<<<<< HEAD
     game.load.tilemap('desert', '/levels/mountains/level1/level1.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.spritesheet('ground', '/characters/ground_1x1.png', 32, 48);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
+=======
+    game.load.tilemap('desert', './levels/mountains/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.spritesheet('ground', './characters/ground_1x1.png', 32, 48);
+    game.load.spritesheet('frog', './characters/gfrog-small.png', 197, 165);
+    game.load.image('bg', './levels/mountains/level1.jpg');
+>>>>>>> FETCH_HEAD
 }
 
 var player;
@@ -20,7 +27,6 @@ var walls;
 var flying = false;
 var wallsCG, playerCG;
 var jumps = 5;
-var jump;
 var jumpsEl = null;
 
 var cb = function(){
@@ -28,11 +34,11 @@ var cb = function(){
 
 function stickToIt(pl, wall){
 	flying = false;
-	player.play('landing');
 	player.body.setZeroVelocity();
 	player.body.setZeroForce();
 	player.body.setZeroRotation();
 	game.physics.p2.gravity.y = 0;
+	player.play("turn");
 }
 
 function die(){
@@ -58,11 +64,17 @@ function create() {
     game.physics.p2.gravity.y = 600;
     game.physics.p2.restitution = 1;
 
+<<<<<<< HEAD
  	// startLayer = map.createLayer('start');
  	// goalLayer = map.createLayer('goal');
  	layer = map.createLayer('tileEbene');
+=======
+ 	layer = map.createLayer('ebene2');
+>>>>>>> FETCH_HEAD
  	layer.resizeWorld();
 
+ 	startLayer = map.createLayer('ebene2');
+ 	goalLayer = map.createLayer('ebene2');
 
 	wallsCG = game.physics.p2.createCollisionGroup();
 	playerCG = game.physics.p2.createCollisionGroup();
@@ -82,7 +94,7 @@ function create() {
 	}
 
 	// INIT PLAYER
-    player = game.add.sprite(133, 100, 'frog');
+    player = game.add.sprite(197, 165, 'frog');
     game.physics.p2.enable(player);
     player.body.setCircle(28);
 	player.body.damping = 0.7
@@ -90,18 +102,17 @@ function create() {
     player.body.setCollisionGroup(playerCG);
 
     player.body.collides(enemyCG, die, this);
+
     player.body.collides(wallsCG, stickToIt);
 
     // player.body.setSize(20, 32, 5, 16);
 // player.body.fixedRotation = true;
 
-    jumping = player.animations.add('jump', [0,1,2,3], 10, false);
-    player.animations.add('sit', [10], 2, true);
-    fly = player.animations.add('fly', [4], 10, true);
-    landing = player.animations.add('landing', [5,6,7,8,9], 10, true);
+    jump = player.animations.add('jump', [0,1,2,3,4,5,6,7], 10, false);
+    player.animations.add('turn', [8], 2, true);
+    fly = player.animations.add('fly', [6], 10, true);
 
-	landing.onComplete.add(function(){ player.play("sit"); }, this);
-	jumping.onComplete.add(function(){ player.play("fly"); }, this);
+	jump.onComplete.add(function(){ player.play("fly"); }, this);
 
 
 
