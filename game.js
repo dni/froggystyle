@@ -42,12 +42,14 @@ function die(){
 function setJumps(){ jumpsEl.innerHTML = jumps; };
 
 function create() {
+	// INIT AND SET STATS
 	jumpsEl = document.getElementById("jumps");
 	setJumps();
 
     game.physics.startSystem(Phaser.Physics.P2JS);
     bg = game.add.tileSprite(0, 0, 2000, 800, 'bg');
 	game.physics.p2.setImpactEvents(true);
+
 
     map = game.add.tilemap('desert');
     map.addTilesetImage('background', 'bg');
@@ -57,6 +59,9 @@ function create() {
 
  	layer = map.createLayer('ebene2');
  	layer.resizeWorld();
+
+ 	startLayer = map.createLayer('ebene2');
+ 	goalLayer = map.createLayer('ebene2');
 
 	wallsCG = game.physics.p2.createCollisionGroup();
 	playerCG = game.physics.p2.createCollisionGroup();
@@ -75,6 +80,7 @@ function create() {
 	    enemys[enemy].collides(playerCG);
 	}
 
+	// INIT PLAYER
     player = game.add.sprite(197, 165, 'frog');
     game.physics.p2.enable(player);
     player.body.setCircle(28);
