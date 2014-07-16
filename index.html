@@ -9,20 +9,25 @@
             margin:0;
             padding:0;
         }
-        canvas {
-            top:0;
-        }
-        #jumpContainer {
+        canvas { }
+        .stats {
             position: fixed;
             top: 12px;
             left: 12px;
             font-size: 24px;
+            z-index: 0;
+        }
+        #levelCtr{
+            top: 6px;
+        }
+        #jumpCtr{
+            top: 36px;
         }
     </style>
     </head>
     <body>
+        <div class="stats" id="levelCtr"><span id="world">StoneWorld</span> - <span>Level: </span><span id="level"></span></div>
         <div class="stats" id="jumpCtr"><span>Jumps: </span><span id="jumps"></span></div>
-        <div class="stats" id="levelCtr"><span id="world">StoneWorld</span> - </div><span>Level: </span><span id="level"></span></div>
     </body>
 
 </html>
