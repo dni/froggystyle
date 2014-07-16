@@ -5,7 +5,6 @@
     "dnilabs"
   ],
   "description": "html5 game with phaser",
-  "main": "game.js",
   "license": "MIT",
   "homepage": "www.dnilabs.com",
   "private": true,
