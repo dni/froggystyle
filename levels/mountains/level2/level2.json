@@ -536,17 +536,38 @@
          "name":"goal",
          "objects":[
                 {
-                 "height":248,
+                 "height":0,
                  "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":44,
+                         "y":8
+                        }, 
+                        {
+                         "x":12,
+                         "y":62
+                        }, 
+                        {
+                         "x":-63,
+                         "y":-6
+                        }, 
+                        {
+                         "x":3,
+                         "y":2
+                        }],
                  "properties":
                     {
 
                     },
                  "type":"",
                  "visible":true,
-                 "width":268,
-                 "x":1702,
-                 "y":172
+                 "width":0,
+                 "x":475,
+                 "y":567
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -561,17 +582,46 @@
          "name":"start",
          "objects":[
                 {
-                 "height":82,
+                 "height":0,
                  "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-29,
+                         "y":77
+                        }, 
+                        {
+                         "x":-2,
+                         "y":90
+                        }, 
+                        {
+                         "x":59,
+                         "y":79
+                        }, 
+                        {
+                         "x":74,
+                         "y":47
+                        }, 
+                        {
+                         "x":41,
+                         "y":3
+                        }, 
+                        {
+                         "x":1,
+                         "y":1
+                        }],
                  "properties":
                     {
 
                     },
                  "type":"",
                  "visible":true,
-                 "width":104,
-                 "x":84,
-                 "y":-242
+                 "width":0,
+                 "x":205,
+                 "y":216
                 }],
          "opacity":1,
          "type":"objectgroup",
