@@ -2,17 +2,11 @@ var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaser-example', { preload
 
 function preload() {
 
-<<<<<<< HEAD
-    game.load.tilemap('desert', '/levels/mountains/level1/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('desert', '/levels/mountains/level1/level2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.spritesheet('ground', '/characters/ground_1x1.png', 32, 48);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
-=======
-    game.load.tilemap('desert', './levels/mountains/level1.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.spritesheet('ground', './characters/ground_1x1.png', 32, 48);
-    game.load.spritesheet('frog', './characters/gfrog-small.png', 197, 165);
-    game.load.image('bg', './levels/mountains/level1.jpg');
->>>>>>> FETCH_HEAD
+
 }
 
 var player;
@@ -26,7 +20,7 @@ var fly;
 var walls;
 var flying = false;
 var wallsCG, playerCG;
-var jumps = 5;
+var jumps = 999;
 var jumpsEl = null;
 
 var cb = function(){
@@ -64,23 +58,20 @@ function create() {
     game.physics.p2.gravity.y = 600;
     game.physics.p2.restitution = 1;
 
-<<<<<<< HEAD
- 	// startLayer = map.createLayer('start');
- 	// goalLayer = map.createLayer('goal');
+
  	layer = map.createLayer('tileEbene');
-=======
- 	layer = map.createLayer('ebene2');
->>>>>>> FETCH_HEAD
+
+
  	layer.resizeWorld();
 
- 	startLayer = map.createLayer('ebene2');
- 	goalLayer = map.createLayer('ebene2');
+ 	startLayer = map.createLayer('start');
+ 	goalLayer = map.createLayer('goal');
 
 	wallsCG = game.physics.p2.createCollisionGroup();
 	playerCG = game.physics.p2.createCollisionGroup();
 	enemyCG = game.physics.p2.createCollisionGroup();
 
-	walls = game.physics.p2.convertCollisionObjects(map, "ebene1", true);
+	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
 
 	for(var wall in walls) {
