@@ -1,24 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="63" height="25" tilewidth="32" tileheight="32">
+<<<<<<< HEAD
  <imagelayer name="bg" width="63" height="25"/>
  <objectgroup name="collision" width="63" height="25">
+=======
+ <imagelayer name="bg" width="63" height="25">
+  <image source="leveldesign.jpg"/>
+ </imagelayer>
+ <objectgroup name="ebene1" width="63" height="25">
+>>>>>>> FETCH_HEAD
   <object x="5" y="315">
    <polyline points="0,0 96,-5 247,-1 328,4 311,83 253,132 216,147 240,161 243,197 180,244 136,253 113,280 60,287 39,315 47,355 40,417 13,452 13,485 -3,485 0,-1"/>
   </object>
   <object x="402" y="798">
    <polyline points="0,0 1,-70 -12,-206 11,-211 77,-166 150,-163 260,-178 267,-98 294,-82 297,1 0,0"/>
   </object>
+<<<<<<< HEAD
   <object x="691" y="3">
    <polyline points="0,0 1,135 -35,159 -13,217 -2,219 -1,301 -2,406 0,435 51,440 146,448 184,489 228,512 275,509 307,460 283,345 295,217 281,99 293,12 291,1 2,1 -1,-1"/>
   </object>
+=======
+>>>>>>> FETCH_HEAD
   <object x="1235" y="797">
    <polyline points="0,0 -2,-361 13,-364 13,-401 89,-422 254,-423 286,-411 316,-383 325,-329 349,-323 353,-237 354,-44 354,-2 0,-1"/>
   </object>
   <object x="1859" y="793">
    <polyline points="0,0 -31,-344 -80,-348 -155,-364 -157,-385 -44,-389 -135,-404 -135,-423 -44,-416 -35,-437 0,-437 8,-413 29,-428 36,-420 23,-397 69,-412 77,-392 56,-375 47,-340 83,5 -7,1"/>
   </object>
+<<<<<<< HEAD
  </objectgroup>
  <layer name="tileEbene" width="63" height="25">
+=======
+  <object x="520" y="328">
+   <polyline points="0,0 84,0 82,42 -16,36 0,-2"/>
+  </object>
+  <object x="778" y="330">
+   <polyline points="0,0 84,0 82,42 -16,36 0,-2"/>
+  </object>
+  <object x="1094" y="328">
+   <polyline points="0,0 84,0 82,42 -16,36 0,-2"/>
+  </object>
+  <object x="1788" y="694">
+   <polyline points="0,0 84,0 82,42 -16,36 0,-2"/>
+  </object>
+ </objectgroup>
+ <layer name="ebene2" width="63" height="25">
+>>>>>>> FETCH_HEAD
   <data encoding="base64" compression="zlib">
    eJztwTEBAAAAwqD1T20LL6AAAAAAAAB+BhicAAE=
   </data>
@@ -31,10 +58,18 @@
    <polyline points="0,0 -1,-8 359,-9 359,3 1,1"/>
   </object>
  </objectgroup>
+<<<<<<< HEAD
  <objectgroup color="#a41461" name="goal" width="63" height="25">
   <object x="1702" y="172" width="268" height="248"/>
  </objectgroup>
  <objectgroup color="#3f46cf" name="start" width="63" height="25">
   <object x="84" y="-242" width="104" height="82"/>
+=======
+ <objectgroup name="start" width="63" height="25"/>
+ <objectgroup name="goal" width="63" height="25" visible="0">
+  <object x="1726" y="278">
+   <polyline points="0,0 -2,100 208,96 200,-8 0,0"/>
+  </object>
+>>>>>>> FETCH_HEAD
  </objectgroup>
 </map>
