@@ -3,10 +3,25 @@
         <script src="/bower_components/phaser/phaser.js"></script>
         <script>window.c = console; c.l=c.log</script>
         <script src="/game.js"></script>
-
+    <style>
+        html,body {
+            background:black;
+            margin:0;
+            padding:0;
+        }
+        canvas {
+            top:0;
+        }
+        #jumpContainer {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            font-size: 24px;
+        }
+    </style>
     </head>
     <body>
-
+        <div id="jumpContainer"><span>Jumps: </span><span id="jumps"></span></div>
     </body>
 
 </html>
