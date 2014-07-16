@@ -2,10 +2,10 @@ var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaser-example', { preload
 
 function preload() {
 
-    game.load.tilemap('desert', 'levels/playground2.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.spritesheet('ground', 'imgs/ground_1x1.png', 32, 48);
-    game.load.spritesheet('frog', 'imgs/frog-small.png', 197, 165);
-    game.load.image('bg', 'imgs/level1.jpg');
+    game.load.tilemap('desert', './levels/mountains/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.spritesheet('ground', './characters/ground_1x1.png', 32, 48);
+    game.load.spritesheet('frog', './characters/gfrog-small.png', 197, 165);
+    game.load.image('bg', './levels/mountains/level1.jpg');
 }
 
 var player;
