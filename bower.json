@@ -1,0 +1,22 @@
+{
+  "name": "froggystyle",
+  "version": "0.0.0",
+  "authors": [
+    "dnilabs"
+  ],
+  "description": "html5 game with phaser",
+  "main": "game.js",
+  "license": "MIT",
+  "homepage": "www.dnilabs.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "~2.0.4"
+  }
+}
