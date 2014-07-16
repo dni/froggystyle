@@ -2,10 +2,11 @@ var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'phaser-example', { preload
 
 function preload() {
 
-    game.load.tilemap('desert', '/levels/mountains/level1/level2.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('desert', '/levels/mountains/level2/level2.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.spritesheet('ground', '/characters/ground_1x1.png', 32, 48);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
+    game.load.image('fg', '/levels/mountains/level1/images/foreground.png');
 
 }
 
@@ -28,11 +29,11 @@ var cb = function(){
 
 function stickToIt(pl, wall){
 	flying = false;
+	player.play("landing");
 	player.body.setZeroVelocity();
 	player.body.setZeroForce();
 	player.body.setZeroRotation();
 	game.physics.p2.gravity.y = 0;
-	player.play("turn");
 }
 
 function die(){
@@ -48,7 +49,8 @@ function create() {
 	setJumps();
 
     game.physics.startSystem(Phaser.Physics.P2JS);
-    bg = game.add.tileSprite(0, 0, 2000, 800, 'bg');
+    bg = game.add.tileSprite(0, 0, 1920, 768, 'bg');
+    fg = game.add.tileSprite(0, 0, 1920, 768, 'fg');
 	game.physics.p2.setImpactEvents(true);
 
 
@@ -60,8 +62,6 @@ function create() {
 
 
  	layer = map.createLayer('tileEbene');
-
-
  	layer.resizeWorld();
 
  	startLayer = map.createLayer('start');
@@ -99,10 +99,12 @@ function create() {
     // player.body.setSize(20, 32, 5, 16);
 // player.body.fixedRotation = true;
 
-    jump = player.animations.add('jump', [0,1,2,3,4,5,6,7], 10, false);
-    player.animations.add('turn', [8], 2, true);
-    fly = player.animations.add('fly', [6], 10, true);
+    jump = player.animations.add('jump', [9,0,1,2,3], 10, false);
+    landing = player.animations.add('landing', [9, 10], 10, false);
+    player.animations.add('turn', [10], 2, true);
+    fly = player.animations.add('fly', [4], 10, true);
 
+	landing.onComplete.add(function(){ player.play("sit"); }, this);
 	jump.onComplete.add(function(){ player.play("fly"); }, this);
 
 
