@@ -5,7 +5,7 @@ function preload() {
     game.load.tilemap('thisLevel', '/levels/mountains/level2/level2.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
-    game.load.spritesheet('fly', '/characters/fliege.png', 133, 100);
+    game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
     game.load.image('fg', '/levels/mountains/level1/images/foreground.png');
     game.load.image('arrow', '/levels/mountains/level1/images/foreground.png');
@@ -94,14 +94,15 @@ function create() {
 	playerCG = game.physics.p2.createCollisionGroup();
 	enemyCG = game.physics.p2.createCollisionGroup();
 	goalCG = game.physics.p2.createCollisionGroup();
+	bounceCG = game.physics.p2.createCollisionGroup();
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
-	goalPoint.setCollisionGroup(goalCG)
-	goalPoint.collides(playerCG)
+	goalPoint.setCollisionGroup(goalCG);
+	goalPoint.collides(playerCG);
 
 	for(var wall in walls) {
 	    walls[wall].setCollisionGroup(wallsCG);
@@ -119,18 +120,18 @@ function create() {
     player.inputEnabled = true;
     game.physics.p2.enable(player);
     player.body.setCircle(28);
-	player.body.damping = 0.7
-	player.body.x = startPoint.x
-	player.body.y = startPoint.y
+	player.body.damping = 0.7;
+	player.body.x = startPoint.x;
+	player.body.y = startPoint.y;
     player.body.setCollisionGroup(playerCG);
     player.body.collides(enemyCG, die, this);
     player.body.collides(wallsCG, stickToIt);
     player.body.collides(goalCG, nextLevel);
 
 
-    goalFly = game.add.sprite(133, 100, 'fly');
-    goalFly.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19], 18, true);
-    goalFly.play("fly")
+    goalFly = game.add.sprite(133, 56, 'fly');
+    goalFly.animations.add('flying', [0,1,2,3,4], 18, true);
+    goalFly.play("flying");
 	goalFly.x = goalPoint.x-80;
 	goalFly.y = goalPoint.y-80;
 
