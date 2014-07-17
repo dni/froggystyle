@@ -7,6 +7,7 @@ function preload() {
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
     game.load.image('fg', '/levels/mountains/level1/images/foreground.png');
+    game.load.image('arrow', '/levels/mountains/level1/images/foreground.png');
 
 }
 
@@ -16,16 +17,16 @@ var facing = 'left';
 var jumpTimer = 0;
 var cursors;
 var jumpButton;
-var bg;
+var fg, bg;
+var bgVel=0.1;
 var fly;
-var walls;
+var walls, enemys, startPoint, goalPoint;
 var flying = false;
-var wallsCG, playerCG;
+var wallsCG, playerCG, goalCG, enemyCG;
 var jumps = 999;
+var level = 0;
 var jumpsEl = null;
-
-var cb = function(){
-};
+var levelEl = null;
 
 function stickToIt(pl, wall){
 	flying = false;
@@ -43,39 +44,61 @@ function die(){
 	c.l("dead");
 }
 var resetLevel = function(){
-	player.body.x = 10;
-	player.body.y = 10;
+	player.body.x = startPoint.x;
+	player.body.y = startPoint.y;
+	player.body.setZeroForce();
+	player.body.setZeroRotation();
+	player.body.setZeroVelocity();
+};
+
+var nextLevel = function(){
+	level++;
+	setLevel();
+	c.l("hurray, you finished the level");
 };
 
 function setJumps(){ jumpsEl.innerHTML = jumps; }
+function setLevel(){ levelEl.innerHTML = level; }
+
+function startJump(){
+	player.play("jump");
+	setTimeout(function(){
+		launch();
+	}, 400);
+}
 
 function create() {
 	jumpsEl = document.getElementById("jumps");
+	levelEl = document.getElementById("level");
 	setJumps();
-
-    bg = game.add.image(0, 0,'bg');
-    //fg = game.add.tileSprite(0, 0, 1920, 768, 'fg');
+	setLevel();
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setImpactEvents(true);
     game.physics.p2.gravity.y = 600;
     game.physics.p2.restitution = 1;
 
+    bg = game.add.image(0, 0, "bg");
+
+    //fg = game.add.tileSprite(0, 0, 'fg');
+
+
     map = game.add.tilemap('thisLevel');
 	map.addTilesetImage('tileset', 'tiles');
-
  	layer = map.createLayer('tileEbene');
  	layer.resizeWorld();
 
- 	var startLayer = game.physics.p2.convertCollisionObjects(map, 'start')[0];
- 	var goalLayer = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
 
 	wallsCG = game.physics.p2.createCollisionGroup();
 	playerCG = game.physics.p2.createCollisionGroup();
 	enemyCG = game.physics.p2.createCollisionGroup();
+	goalCG = game.physics.p2.createCollisionGroup();
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
+
+ 	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
+ 	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
 
 	for(var wall in walls) {
 	    walls[wall].setCollisionGroup(wallsCG);
@@ -87,22 +110,25 @@ function create() {
 	    enemys[enemy].collides(playerCG);
 	}
 
+	goalPoint.setCollisionGroup(goalCG)
+
 	// INIT PLAYER
     player = game.add.sprite(133, 100, 'frog');
     player.inputEnabled = true;
     game.physics.p2.enable(player);
     player.body.setCircle(28);
 	player.body.damping = 0.7
-	player.body.x = startLayer.x
-	player.body.y = startLayer.y
+	player.body.x = startPoint.x
+	player.body.y = startPoint.y
     player.body.setCollisionGroup(playerCG);
     player.body.collides(enemyCG, die, this);
     player.body.collides(wallsCG, stickToIt);
+    player.body.collides(goalCG, nextLevel);
 
 
     goalFly = game.add.image(133, 100, 'frog');
-	goalFly.x = goalLayer.x-80;
-	goalFly.y = goalLayer.y-80;
+	goalFly.x = goalPoint.x-80;
+	goalFly.y = goalPoint.y-80;
 
 	// ANIMATIONS
     jump = player.animations.add('jump', [9,0,1,2,3], 10, false);
@@ -112,18 +138,15 @@ function create() {
 
 	landing.onComplete.add(function(){ player.play("sit"); }, this);
 
-	jump.onComplete.add(function() { player.play("fly");	}, this);
+	jump.onComplete.add(function() { player.play("fly"); }, this);
 
 	game.camera.follow(player);
 	player.events.onInputDown.add(startJump, this);
 	player.events.onInputUp.add(launch, this);
 }
-function startJump(){
-	player.play("jump");
-	setTimeout(function(){
-		launch();
-	}, 400);
-}
+
+
+
 function launch() {
 	if (flying === true || jumps === 0) { return false;	}
 	flying = true;
@@ -138,12 +161,11 @@ function launch() {
 	veloX = diffX * 1.2;
 	veloY = diffY * 3;
 
-	if (diffX > 0) {
-		// jump right clicked
+	if (diffX > 0) { // jump right
 		if (player.scale.x < 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
-	} else {
+	} else { // jump left
 		if (player.scale.x > 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
@@ -151,9 +173,9 @@ function launch() {
 }
 
 function update() {
-
+    bg.x += player.body.velocity.x/20;
 }
 
 function render() {
-	game.debug.body(player);
+	//game.debug.body(player);
 }
