@@ -5,6 +5,7 @@ function preload() {
     game.load.tilemap('thisLevel', '/levels/mountains/level2/level2.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
+    game.load.spritesheet('fly', '/characters/fliege.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
     game.load.image('fg', '/levels/mountains/level1/images/foreground.png');
     game.load.image('arrow', '/levels/mountains/level1/images/foreground.png');
@@ -127,7 +128,9 @@ function create() {
     player.body.collides(goalCG, nextLevel);
 
 
-    goalFly = game.add.image(133, 100, 'frog');
+    goalFly = game.add.sprite(133, 100, 'fly');
+    goalFly.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19], 18, true);
+    goalFly.play("fly")
 	goalFly.x = goalPoint.x-80;
 	goalFly.y = goalPoint.y-80;
 
