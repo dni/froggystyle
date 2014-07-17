@@ -98,6 +98,7 @@ function create() {
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
+	bounces = game.physics.p2.convertCollisionObjects(map, "enemy", true);
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
@@ -114,6 +115,10 @@ function create() {
 	    enemys[enemy].collides(playerCG);
 	}
 
+	for(var bounce in bounces) {
+	    bounces[bounce].setCollisionGroup(bounceCG);
+	    bounces[bounce].collides(playerCG);
+	}
 
 	// INIT PLAYER
     player = game.add.sprite(133, 100, 'frog');
@@ -127,13 +132,17 @@ function create() {
     player.body.collides(enemyCG, die, this);
     player.body.collides(wallsCG, stickToIt);
     player.body.collides(goalCG, nextLevel);
+    player.body.collides(bounceCG);
 
 
     goalFly = game.add.sprite(133, 56, 'fly');
-    goalFly.animations.add('flying', [0,1,2,3,4], 18, true);
+    goalFly.animations.add('flying', [0,1,2,3,4], 30, true);
     goalFly.play("flying");
-	goalFly.x = goalPoint.x-80;
-	goalFly.y = goalPoint.y-80;
+    game.physics.p2.enable(goalFly);
+
+
+	goalFly.body.x = goalPoint.x-80;
+	goalFly.body.y = goalPoint.y-80;
 
 	// ANIMATIONS
     jump = player.animations.add('jump', [9,0,1,2,3], 10, false);
@@ -142,7 +151,6 @@ function create() {
     fly = player.animations.add('fly', [4], 10, true);
 
 	landing.onComplete.add(function(){ player.play("sit"); }, this);
-
 	jump.onComplete.add(function() { player.play("fly"); }, this);
 
 	game.camera.follow(player);
@@ -166,19 +174,25 @@ function launch() {
 	veloX = diffX * 1.2;
 	veloY = diffY * 3;
 
-	if (diffX > 0) { // jump right
+	if (diffX > 0) {	// jump right
 		if (player.scale.x < 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
-	} else { // jump left
+	} else {			// jump left
 		if (player.scale.x > 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
 	}
 }
 
+flyAniCntX= 0;
+flyAniCntY= 0;
 function update() {
+	flyAniCntX += 0.075;
+	flyAniCntY += 0.125;
     bg.x += player.body.velocity.x/20;
+    goalFly.body.x += Math.sin(flyAniCntX)*10;
+    goalFly.body.y += Math.sin(flyAniCntY)*10;
 }
 
 function render() {
