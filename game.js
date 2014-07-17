@@ -2,8 +2,8 @@ var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaser-example', { preload: 
 
 function preload() {
 
-    game.load.tilemap('desert', '/levels/mountains/level2/level2.json', null, Phaser.Tilemap.TILED_JSON);
-    //game.load.spritesheet('ground', '/characters/ground_1x1.png', 32, 48);
+    game.load.tilemap('thisLevel', '/levels/mountains/level2/level2.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.image('bg', '/levels/mountains/level1/images/background.jpg');
     game.load.image('fg', '/levels/mountains/level1/images/foreground.png');
@@ -36,6 +36,7 @@ function stickToIt(pl, wall){
 	game.physics.p2.gravity.y = 0;
 };
 
+
 function die(){
 	resetLevel();
 	// die
@@ -52,15 +53,16 @@ function create() {
 	jumpsEl = document.getElementById("jumps");
 	setJumps();
 
-    bg = game.add.tileSprite(0, 0, 1920, 768, 'bg');
-    fg = game.add.tileSprite(0, 0, 1920, 768, 'fg');
+    bg = game.add.image(0, 0,'bg');
+    //fg = game.add.tileSprite(0, 0, 1920, 768, 'fg');
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setImpactEvents(true);
     game.physics.p2.gravity.y = 600;
     game.physics.p2.restitution = 1;
 
-    map = game.add.tilemap('desert');
+    map = game.add.tilemap('thisLevel');
+	map.addTilesetImage('tileset', 'tiles');
 
  	layer = map.createLayer('tileEbene');
  	layer.resizeWorld();
@@ -98,8 +100,7 @@ function create() {
     player.body.collides(wallsCG, stickToIt);
 
 
-    goalFly = game.add.sprite(133, 100, 'frog');
-    window.gogo = goalLayer
+    goalFly = game.add.image(133, 100, 'frog');
 	goalFly.x = goalLayer.x-80;
 	goalFly.y = goalLayer.y-80;
 
