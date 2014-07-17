@@ -98,7 +98,7 @@ function create() {
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
-	bounces = game.physics.p2.convertCollisionObjects(map, "enemy", true);
+	bounces = game.physics.p2.convertCollisionObjects(map, "bounce", true);
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
