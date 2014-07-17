@@ -99,6 +99,8 @@ function create() {
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
+	goalPoint.setCollisionGroup(goalCG)
+	goalPoint.collides(playerCG)
 
 	for(var wall in walls) {
 	    walls[wall].setCollisionGroup(wallsCG);
@@ -110,7 +112,6 @@ function create() {
 	    enemys[enemy].collides(playerCG);
 	}
 
-	goalPoint.setCollisionGroup(goalCG)
 
 	// INIT PLAYER
     player = game.add.sprite(133, 100, 'frog');
