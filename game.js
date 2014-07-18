@@ -133,7 +133,7 @@ function create() {
     player.body.collides(enemyCG, die, this);
     player.body.collides(wallsCG, stickToIt);
     player.body.collides(goalCG, nextLevel);
-    player.body.collides(bounceCG);
+    player.body.collides(bounceCG, function(){c.l("bounce");});
 
     // INIT GOALFLY
     goalFly = game.add.sprite(133, 56, 'fly');
@@ -193,8 +193,9 @@ flyAniCntY= 0;
 
 function update() {
 	// no gravity hack ....
-	goalFly.body.setZeroVelocity()
-	goalFly.body.setZeroRotation()
+	goalFly.body.setZeroVelocity();
+	goalFly.body.setZeroRotation();
+	goalFly.body.setZeroForce();
 	flyAniCntX += 0.075;
 	flyAniCntY += 0.125;
     goalFly.body.x += Math.sin(flyAniCntX)*10;
