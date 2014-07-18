@@ -140,6 +140,8 @@ function create() {
     game.physics.p2.enable(goalFly);
 	goalFly.body.setCollisionGroup(goalCG);
 	goalFly.body.collides(playerCG);
+	goalFly.body.setZeroVelocity();
+
 
     goalFly.animations.add('flying', [0,1,2,3,4], 30, true);
     goalFly.play("flying");
