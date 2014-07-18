@@ -98,7 +98,7 @@ function create() {
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
-	bounces = game.physics.p2.convertCollisionObjects(map, "bounce", true);
+	bounces = game.physics.p2.convertCollisionObjects(map, "bounce", false) || null;
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
@@ -120,6 +120,7 @@ function create() {
 	    bounces[bounce].collides(playerCG);
 	}
 
+
 	// INIT PLAYER
     player = game.add.sprite(133, 100, 'frog');
     player.inputEnabled = true;
@@ -134,12 +135,11 @@ function create() {
     player.body.collides(goalCG, nextLevel);
     player.body.collides(bounceCG);
 
-
     goalFly = game.add.sprite(133, 56, 'fly');
     goalFly.animations.add('flying', [0,1,2,3,4], 30, true);
     goalFly.play("flying");
     game.physics.p2.enable(goalFly);
-
+    goalFly.body.mass= 1000;
 
 	goalFly.body.x = goalPoint.x-80;
 	goalFly.body.y = goalPoint.y-80;
@@ -157,7 +157,6 @@ function create() {
 	player.events.onInputDown.add(startJump, this);
 	player.events.onInputUp.add(launch, this);
 }
-
 
 
 function launch() {
@@ -192,7 +191,7 @@ function update() {
 	flyAniCntY += 0.125;
     bg.x += player.body.velocity.x/20;
     goalFly.body.x += Math.sin(flyAniCntX)*10;
-    goalFly.body.y += Math.sin(flyAniCntY)*10;
+    //goalFly.body.y += Math.sin(flyAniCntY)*10;
 }
 
 function render() {
