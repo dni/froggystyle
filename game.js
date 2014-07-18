@@ -1,8 +1,14 @@
 var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
+<<<<<<< HEAD
 
     game.load.tilemap('thisLevel', '/levels/mountains/level3/level9.json', null, Phaser.Tilemap.TILED_JSON);
+=======
+	var level = window.location.hash.split("#").pop();
+	c.l(level);
+    game.load.tilemap('thisLevel', '/levels/mountains/'+level+'/'+level+'.json', null, Phaser.Tilemap.TILED_JSON);
+>>>>>>> 0599afa81f1c93b565adc9fc69f594ae587ca12d
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
