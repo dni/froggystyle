@@ -2,7 +2,7 @@ var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'phaser-example', { preload: 
 
 function preload() {
 
-    game.load.tilemap('thisLevel', '/levels/mountains/level3/level9.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('thisLevel', '/levels/mountains/level3/level8.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
