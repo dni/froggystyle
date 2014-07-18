@@ -12,7 +12,7 @@ var flying = false;
 var wallsCG, playerCG, goalCG, enemyCG;
 var jumps = 999;
 var level = 1;
-var world = "mountains";
+var world = "terrarium";
 var jumpsEl = null;
 var levelEl = null;
 
@@ -20,13 +20,13 @@ var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: pre
 
 
 function preload() {
-	if(window.location.hash.length>0){ level = window.location.hash.split("level").pop();}
-    game.load.tilemap('thisLevel', '/levels/'+world+'/level'+level+'/level'+level+'.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
+    if(window.location.hash.length>0){ level = window.location.hash.split("level").pop();}
+    game.load.tilemap('thisLevel', '/levels/'+world+'/level1/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
-    game.load.image('bg', '/levels/mountains/level'+level+'/images/background.jpg');
+    game.load.image('bg', '/levels/'+world+'/level'+level+'/background.jpg');
     //game.load.image('fg', '/levels/mountains/level'+level+'/images/foreground.png');
     game.load.image('arrow', '/characters/arrow.png');
 }
