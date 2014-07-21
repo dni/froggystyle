@@ -18,15 +18,47 @@ var levelEl = null;
 
 var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
 
+// BasicGame.MainMenu = function(){ };
+//
+// BasicGame.MainMenu.prototype = {
+    // preload : function(){
+    // // load basic assets for this state
+//
+    	// this.load.image('tiles', '/characters/ground_1x1.png');
+//
+    // },
+//
+    // create : function(){
+//
+    // // place the assets and elements in their initial positions, create the state
+//
+    	// this.titleName = this.add.image(300,300,'tiles');
+//
+    // },
+//
+    // update : function(){
+//
+    // // your game loop goes here
+//
+    	// this.titleName.x++;
+    // }
+// }
+
+// game.state.add('MainMenu',BasicGame.MainMenu);
+
+
+
+
 
 function preload() {
-    if(window.location.hash.length>0){ level = window.location.hash.split("level").pop();}
-    game.load.tilemap('thisLevel', '/levels/'+world+'/level1/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    if(window.location.hash.length>0){ level = window.location.hash;}
+    else {level = "mountains/level1"}
+    game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
-    game.load.image('bg', '/levels/'+world+'/level'+level+'/background.jpg');
+    game.load.image('bg', '/levels/'+level+'/background.jpg');
     //game.load.image('fg', '/levels/mountains/level'+level+'/images/foreground.png');
     game.load.image('arrow', '/characters/arrow.png');
 }
@@ -165,7 +197,7 @@ function create() {
 
 
 function launch() {
-	
+
 	if (flying === true || jumps === 0) { return false;	}
 	flying = true;
 	jumps--;
