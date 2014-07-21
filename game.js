@@ -18,33 +18,33 @@ var levelEl = null;
 
 var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
 
-// BasicGame.MainMenu = function(){ };
+game.MainMenu = function(){ };
+
+game.MainMenu.prototype = {
+    preload : function(){
+    //load basic assets for this state
 //
-// BasicGame.MainMenu.prototype = {
-    // preload : function(){
-    // // load basic assets for this state
+    this.load.image('tiles', '/characters/ground_1x1.png');
 //
-    	// this.load.image('tiles', '/characters/ground_1x1.png');
+},
 //
-    // },
-//
-    // create : function(){
+    create : function(){
 //
     // // place the assets and elements in their initial positions, create the state
 //
-    	// this.titleName = this.add.image(300,300,'tiles');
+    this.titleName = this.add.image(300,300,'tiles');
 //
-    // },
+},
 //
-    // update : function(){
+    update : function(){
 //
     // // your game loop goes here
 //
-    	// this.titleName.x++;
-    // }
-// }
+    	this.titleName.x++;
+    }
+}
 
-// game.state.add('MainMenu',BasicGame.MainMenu);
+game.state.add('MainMenu',game.MainMenu);
 
 
 
