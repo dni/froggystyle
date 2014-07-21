@@ -12,7 +12,7 @@ var flying = false;
 var wallsCG, playerCG, goalCG, enemyCG;
 var jumps = 999;
 var level = 1;
-var world = "terrarium";
+var world = "mountains";
 var jumpsEl = null;
 var levelEl = null;
 
@@ -21,7 +21,7 @@ var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: pre
 
 function preload() {
     if(window.location.hash.length>0){ level = window.location.hash.split("level").pop();}
-    game.load.tilemap('thisLevel', '/levels/'+world+'/level3/level3.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('thisLevel', '/levels/'+world+'/level1/level1.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
@@ -133,13 +133,15 @@ function create() {
     player.body.collides(enemyCG, die, this);
     player.body.collides(wallsCG, stickToIt);
     player.body.collides(goalCG, nextLevel);
-    player.body.collides(bounceCG);
+    player.body.collides(bounceCG, function(){c.l("bounce");});
 
     // INIT GOALFLY
     goalFly = game.add.sprite(133, 56, 'fly');
     game.physics.p2.enable(goalFly);
 	goalFly.body.setCollisionGroup(goalCG);
 	goalFly.body.collides(playerCG);
+	goalFly.body.setZeroVelocity();
+
 
     goalFly.animations.add('flying', [0,1,2,3,4], 30, true);
     goalFly.play("flying");
@@ -193,8 +195,9 @@ flyAniCntY= 0;
 
 function update() {
 	// no gravity hack ....
-	goalFly.body.setZeroVelocity()
-	goalFly.body.setZeroRotation()
+	goalFly.body.setZeroVelocity();
+	goalFly.body.setZeroRotation();
+	goalFly.body.setZeroForce();
 	flyAniCntX += 0.075;
 	flyAniCntY += 0.125;
     goalFly.body.x += Math.sin(flyAniCntX)*10;
