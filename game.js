@@ -51,7 +51,7 @@ var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: pre
 
 
 function preload() {
-    if(window.location.hash.length>0){ level = window.location.hash;}
+    if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
     else {level = "mountains/level1"}
     game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
