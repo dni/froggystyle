@@ -58,7 +58,7 @@ function preload() {
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
-    game.load.image('bg', '/levels/'+level+'/background.jpg');
+    game.load.image('bg', '/levels/'+level+'/images/background.jpg');
     //game.load.image('fg', '/levels/mountains/level'+level+'/images/foreground.png');
     game.load.image('arrow', '/characters/arrow.png');
 }
