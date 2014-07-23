@@ -16,49 +16,16 @@ var world = "terrarium";
 var jumpsEl = null;
 var levelEl = null;
 
-var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
-
-game.MainMenu = function(){ };
-
-game.MainMenu.prototype = {
-    preload : function(){
-    //load basic assets for this state
-//
-    this.load.image('tiles', '/characters/ground_1x1.png');
-//
-},
-//
-    create : function(){
-//
-    // // place the assets and elements in their initial positions, create the state
-//
-    this.titleName = this.add.image(300,300,'tiles');
-//
-},
-//
-    update : function(){
-//
-    // // your game loop goes here
-//
-    	this.titleName.x++;
-    }
-}
-
-game.state.add('MainMenu',game.MainMenu);
-
-
-
-
+var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle');
 
 function preload() {
-    if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
-    else {level = "mountains/level1"}
-    game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
+    //if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
+    //else {level = "mountains/level1"}
+    //game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
-    game.load.image('bg', '/levels/'+level+'/images/background.jpg');
     //game.load.image('fg', '/levels/mountains/level'+level+'/images/foreground.png');
     game.load.image('arrow', '/characters/arrow.png');
 }
@@ -90,10 +57,12 @@ var resetLevel = function(){
 var nextLevel = function(){
 	level++;
 	setLevel();
-	if(game){game.destroy();}
-	var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
-	preload();
-	create();
+	generateNewLevel();
+	//if(game){ game.destroy(); }
+	//var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
+	//(preload();
+	//create();
+	//game.state.start("MainMenu");
 	c.l("hurray, you finished the level");
 };
 
@@ -111,12 +80,13 @@ function create() {
 	setJumps();
 	setLevel();
 
+    bg = game.add.image(0, 0, "bg");
+
+
     game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setImpactEvents(true);
     game.physics.p2.gravity.y = 600;
     game.physics.p2.restitution = 1;
-
-    bg = game.add.image(0, 0, "bg");
 
     map = game.add.tilemap('thisLevel');
 	map.addTilesetImage('tileset', 'tiles');
@@ -239,3 +209,38 @@ function update() {
 function render() {
 	game.debug.body(goalFly);
 }
+
+
+var generateLevels = function () {
+
+
+	game.MainMenu = function(){ };
+
+	game.MainMenu.prototype = {
+	    preload : function(){
+			game.load.json('json', 'levelData.json');
+			var json = game.cache.getJSON('json');
+			console.log(json);
+		  	levelData = JSON.parse(levelData);
+
+
+	    	game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
+	    	game.load.image('bg', '/levels/'+level+'/images/background.jpg');
+
+	},
+		create : function(){
+	    	create();
+	//
+		},
+	//
+	    update : function(){
+	    // // your game loop goes here
+	    	update();
+	    }
+	}
+
+	game.state.add('MainMenu',game.MainMenu);
+
+}
+
+generateLevels()

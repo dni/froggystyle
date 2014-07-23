@@ -1,0 +1,16 @@
+{
+	"worlds": {
+		"mountains": {
+			"level1": {
+				"jumps": 6,
+				"countdown": 30
+			}
+		},
+		"terrarium": {
+			"level1": {
+				"jumps": 6,
+				"countdown": 30
+			}
+		}
+	}
+}
