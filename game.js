@@ -16,16 +16,19 @@ var world = "terrarium";
 var jumpsEl = null;
 var levelEl = null;
 
-var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle');
+var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'froggystyle', { preload: preload, create: create, update: update, render: render });
+
 
 function preload() {
-    //if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
-    //else {level = "mountains/level1"}
-    //game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
+    if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
+    else {level = "mountains/level1"}
+    game.load.tilemap('thisLevel', '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
     //game.load.tilemap('nextLevel', '/levels/'+world+'/level'+(level+1)+'/level'+(level+1)+'.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('tiles', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
+    game.load.image('bg', '/levels/'+level+'/images/background.jpg');
+
     //game.load.image('fg', '/levels/mountains/level'+level+'/images/foreground.png');
     game.load.image('arrow', '/characters/arrow.png');
 }
@@ -82,7 +85,6 @@ function create() {
 
     bg = game.add.image(0, 0, "bg");
 
-
     game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setImpactEvents(true);
     game.physics.p2.gravity.y = 600;
@@ -93,7 +95,7 @@ function create() {
  	layer = map.createLayer('tileEbene');
  	layer.resizeWorld();
 
-
+	// collision layers
 	wallsCG = game.physics.p2.createCollisionGroup();
 	playerCG = game.physics.p2.createCollisionGroup();
 	enemyCG = game.physics.p2.createCollisionGroup();
@@ -111,12 +113,10 @@ function create() {
 	    walls[wall].setCollisionGroup(wallsCG);
 	    walls[wall].collides(playerCG);
 	}
-
 	for(var enemy in enemys) {
 	    enemys[enemy].setCollisionGroup(enemyCG);
 	    enemys[enemy].collides(playerCG);
 	}
-
 	for(var bounce in bounces) {
 	    bounces[bounce].setCollisionGroup(bounceCG);
 	    bounces[bounce].collides(playerCG);
@@ -143,15 +143,15 @@ function create() {
 	goalFly.body.setCollisionGroup(goalCG);
 	goalFly.body.collides(playerCG);
 	goalFly.body.setZeroVelocity();
+	goalFly.body.static = true;
 
+	goalFly.body.x = goalPoint.x;
+	goalFly.body.y = goalPoint.y;
 
     goalFly.animations.add('flying', [0,1,2,3,4], 30, true);
     goalFly.play("flying");
 
-	goalFly.body.x = goalPoint.x-80;
-	goalFly.body.y = goalPoint.y-80;
-
-	// ANIMATIONS
+	// PLAYER ANIMATIONS
     jump = player.animations.add('jump', [9,0,1,2,3], 10, false);
     landing = player.animations.add('landing', [9, 10], 10, false);
     player.animations.add('turn', [10], 2, true);
@@ -167,7 +167,6 @@ function create() {
 
 
 function launch() {
-
 	if (flying === true || jumps === 0) { return false;	}
 	flying = true;
 	jumps--;
@@ -185,25 +184,22 @@ function launch() {
 		if (player.scale.x < 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
-	} else {			// jump left
+	} else if (diffX < 0){			// jump left
 		if (player.scale.x > 0){ player.scale.x *= -1; }
 		player.body.velocity.x = veloX;
 		player.body.velocity.y = veloY;
 	}
 }
 
+
 flyAniCntX= 0;
 flyAniCntY= 0;
-
 function update() {
 	// no gravity hack ....
-	goalFly.body.setZeroVelocity();
-	goalFly.body.setZeroRotation();
-	goalFly.body.setZeroForce();
 	flyAniCntX += 0.075;
 	flyAniCntY += 0.125;
-    goalFly.body.x += Math.sin(flyAniCntX)*10;
-    goalFly.body.y += Math.sin(flyAniCntY)*10;
+    //goalFly.body.x += Math.sin(flyAniCntX)*10;
+    //goalFly.body.y += Math.sin(flyAniCntY)*10;
 }
 
 function render() {
