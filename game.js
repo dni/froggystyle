@@ -20,6 +20,8 @@ var startTime = 0;
 var levelMap = [];
 var levelMapState = 0;
 
+var DEBUG = true;
+
 function preload(world, levelNr) {
 	for(world in levelData){
 		if (levelData.hasOwnProperty(world)) {
@@ -93,7 +95,7 @@ function create() {
 	setJumps();
 	setLevel();
 	setStartTime();
-	level = levelMap[levelMapState];
+	if (DEBUG===false) {level = levelMap[levelMapState];}
     bg = game.add.image(0, 0, "bg"+level);
 
     game.physics.startSystem(Phaser.Physics.P2JS);
