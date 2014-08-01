@@ -12,23 +12,24 @@ var walls, enemys, startPoint, goalPoint;
 var flying = false;
 var wallsCG, playerCG, goalCG, enemyCG;
 var jumps = 999;
-var level = "";
+var level = "cave/level1";
 var levelData = "";
 var jumpsEl = null;
 var levelEl = null;
 var startTime = 0;
+var levelMap = [];
+var levelMapState = 0;
 
 function preload(world, levelNr) {
 	for(world in levelData){
 		if (levelData.hasOwnProperty(world)) {
 			for(lvl in levelData[world]){
-			    //level = world+"/level"+(i)
     	        if (levelData[world].hasOwnProperty(lvl)) {
-		    		level = world+"/"+lvl;
-				    game.load.tilemap('tilemap'+level, '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
-				    game.load.image('bg'+level, '/levels/'+level+'/images/background.jpg');
+		    		lvl = world+"/"+lvl;
+		    		levelMap.push(lvl);
+				    game.load.tilemap('tilemap'+lvl, '/levels/'+lvl+'/level.json', null, Phaser.Tilemap.TILED_JSON);
+				    game.load.image('bg'+lvl, '/levels/'+lvl+'/images/background.jpg');
 		        }
-
 			}
 		}
 	}
@@ -36,12 +37,10 @@ function preload(world, levelNr) {
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
     game.load.image('arrow', '/characters/arrow.png');
+    game.stage.disableVisibilityChange = true;
+    game.canvas.tabIndex = 1;
 }
 
-function preloadLevel(world, levelNr){
-	//if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
-    //else if (typeof(levelNr)==="number"){level = world+"/"+levelNr}
-}
 
 function stickToIt(pl, wall){
 	flying = false;
@@ -66,12 +65,6 @@ var resetLevel = function(){
 	player.body.setZeroVelocity();
 };
 
-var nextLevel = function(){
-	saveLevelValues();
-	generateNewLevel();
-	c.l("hurray, you finished the level");
-};
-
 function setJumps(){ jumpsEl.innerHTML = jumps; }
 function setLevel(){ levelEl.innerHTML = level; }
 
@@ -89,7 +82,7 @@ function saveLevelValues(){
 }
 
 function startJump(){
-	c.l("HE SHOULD JUMP");
+	if (flying || jumps === 0) { return false;	}
 	player.play("jump");
 	setTimeout(function(){ launch(); }, 400);
 }
@@ -97,11 +90,10 @@ function startJump(){
 function create() {
 	jumpsEl = document.getElementById("jumps");
 	levelEl = document.getElementById("level");
-	level = "cave/level1";
 	setJumps();
 	setLevel();
 	setStartTime();
-
+	level = levelMap[levelMapState];
     bg = game.add.image(0, 0, "bg"+level);
 
     game.physics.startSystem(Phaser.Physics.P2JS);
@@ -148,7 +140,7 @@ function create() {
 function createPlayerAndFly(){
     player = game.add.sprite(133, 100, 'frog');
     player.inputEnabled = true;
-    game.physics.p2.enable(player);
+    game.physics.p2.enable(player, true);
     player.body.setCircle(28);
 	player.body.damping = 0.7;
 	player.body.x = startPoint.x;
@@ -159,7 +151,6 @@ function createPlayerAndFly(){
     player.body.collides(wallsCG, stickToIt);
     player.body.collides(goalCG, nextLevel);
     player.body.collides(bounceCG, function(){c.l("bounce");});
-    player.debug = true
 
     // INIT GOALFLY
     goalFly = game.add.sprite(133, 56, 'fly');
@@ -186,13 +177,14 @@ function createPlayerAndFly(){
 
 	game.camera.follow(player);
 	player.events.onInputDown.add(startJump, this);
-	//player.events.onInputUp.add(launch, this);
+	window.addEventListener('mouseup', function(e){
+		game.focusGain(e);
+	});
 
 }
 
 
 function launch() {
-	if (flying === true || jumps === 0) { return false;	}
 	flying = true;
 	jumps--;
 	setJumps();
@@ -230,7 +222,11 @@ function update() {
 
 var bgLoader,nextLevelLoader;
 
-var generateNewLevel = function () {
+
+var nextLevel = function () {
+	levelMapState++;
+	saveLevelValues();
+	level = levelMap[levelMapState];
 
 	function showEndStats(){
 		c.l("show stats");
@@ -286,7 +282,6 @@ var generateNewLevel = function () {
 		goalFly.body.x = goalPoint.x;
 		goalFly.body.y = goalPoint.y;
 	}
-
 }
 
 // get levelData+user highscore+playedlevels+timeneeded
@@ -313,7 +308,8 @@ function loadXMLDoc(file){
 
 function gameStart(){
 	game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'froggystyle', { preload: preload, create: create, update: update });
-;}
+
+}
 
 // save user data
 function savelevelData () { c.l("saveIt");localStorage.setItem(storrageId, JSON.stringify(levelData)); }
