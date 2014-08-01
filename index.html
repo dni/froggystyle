@@ -20,6 +20,16 @@
         }
         #levelCtr { top: 6px; }
         #jumpCtr { top: 36px; }
+        #betweenLvlStats {display: none;
+            width: 100%;
+            height: 100%;
+            background: blue;
+            font-size: 48px;
+            z-index: 1000;
+            position: absolute;
+            top: 0;
+            left:0;
+        }
     </style>
     </head>
     <body>
@@ -32,6 +42,7 @@
         </select> -->
         <div class="stats" id="levelCtr"><span id="world">StoneWorld</span> - <span>Level: </span><span id="level"></span></div>
         <div class="stats" id="jumpCtr"><span>Jumps: </span><span id="jumps"></span></div>
+        <div id="betweenLvlStats"><span>Time: </span><span></span><br><span>BestTime: </span><span ></span></div>
     </body>
 
 </html>

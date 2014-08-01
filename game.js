@@ -16,11 +16,12 @@ var level = "cave/level1";
 var levelData = "";
 var jumpsEl = null;
 var levelEl = null;
+var statsEl = null;
 var startTime = 0;
 var levelMap = [];
 var levelMapState = 0;
 
-var DEBUG = true;
+var DEBUG = false;
 
 function preload(world, levelNr) {
 	for(world in levelData){
@@ -52,34 +53,45 @@ function stickToIt(pl, wall){
 	player.body.setZeroRotation();
 	player.body.rotation = 0
 	game.physics.p2.gravity.y = 0;
-};
+}
 
 function die(){
 	resetLevel();
 	// die
 	c.l("dead");
 }
+
 var resetLevel = function(){
 	player.body.x = startPoint.x;
 	player.body.y = startPoint.y;
 	player.body.setZeroForce();
 	player.body.setZeroRotation();
 	player.body.setZeroVelocity();
-};
+}
 
 function setJumps(){ jumpsEl.innerHTML = jumps; }
 function setLevel(){ levelEl.innerHTML = level; }
+function setStats(timeNeeded, timeNeededOld){
+	statsEl.children[1].innerHTML = timeNeeded;
+	statsEl.children[4].innerHTML = timeNeededOld;
+	statsEl.style.display = "block";
+}
+function hideStats(){
+	statsEl.style.display = "none";
+}
 
 function setStartTime(){ startTime = Date.now(); }
 
-function saveLevelValues(){
+function setLevelValues(){
 	lvlData = level.split("/");
 	world = lvlData[0];
 	lvlNr = lvlData[1];
-	c.l(lvlData);
 	timeNeeded = ((Date.now() - startTime))>>0;
-	timeNeededOld = levelData[world][lvlNr].time || null
-	if (timeNeeded<timeNeededOld || !timeNeededOld){ levelData[world][lvlNr].time = timeNeeded;}
+	timeNeededOld = levelData[world][lvlNr].time || null;
+	if (timeNeeded<timeNeededOld || !timeNeededOld){
+		levelData[world][lvlNr].time = timeNeededOld = timeNeeded;
+	}
+	setStats(timeNeeded, timeNeededOld);
 	levelData[world][lvlNr].finished = true;
 }
 
@@ -92,6 +104,7 @@ function startJump(){
 function create() {
 	jumpsEl = document.getElementById("jumps");
 	levelEl = document.getElementById("level");
+	statsEl = document.getElementById("betweenLvlStats");
 	setJumps();
 	setLevel();
 	setStartTime();
@@ -217,8 +230,8 @@ function update() {
 	// no gravity hack ....
 	flyAniCntX += 0.075;
 	flyAniCntY += 0.125;
-    //goalFly.body.x += Math.sin(flyAniCntX)*10;
-    //goalFly.body.y += Math.sin(flyAniCntY)*10;
+    goalFly.body.x += Math.sin(flyAniCntX)*7;
+    goalFly.body.y += Math.sin(flyAniCntY)*10;
 }
 
 
@@ -227,14 +240,13 @@ var bgLoader,nextLevelLoader;
 
 var nextLevel = function () {
 	levelMapState++;
-	saveLevelValues();
+	setLevelValues();
+	saveLevelData();
 	level = levelMap[levelMapState];
-
 	function showEndStats(){
-		c.l("show stats");
-    	preload("terrarium", 1)
 		setTimeout(function(){
 			setNewLevelObjects();
+			hideStats();
 		}, 2000);
 	}
 	showEndStats()
@@ -243,6 +255,8 @@ var nextLevel = function () {
 		setLevel(level);
 		map.destroy();
 		bg.destroy();
+		player.destroy();
+		goalFly.destroy();
 
 		setStartTime();
 
@@ -254,9 +268,7 @@ var nextLevel = function () {
 		for(var enemy in enemys) { enemys[enemy].removeFromWorld() }
 		for(var bounce in bounces) { bounces[bounce].removeFromWorld() }
 
-		player.destroy()
-		goalFly.destroy()
-		createPlayerAndFly()
+		createPlayerAndFly();
 
 		walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 		enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
@@ -283,6 +295,9 @@ var nextLevel = function () {
 
 		goalFly.body.x = goalPoint.x;
 		goalFly.body.y = goalPoint.y;
+
+		game.physics.p2.gravity.y = 600;
+
 	}
 }
 
@@ -290,7 +305,7 @@ var nextLevel = function () {
 
 storrageId = "froggystyleHighscore"
 
-//levelData = JSON.parse(localStorage.getItem(storrageId)) || null
+levelData = JSON.parse(localStorage.getItem(storrageId)) || null
 if (!levelData){ loadXMLDoc("levelData.json"); } else { gameStart();}
 
 function loadXMLDoc(file){
@@ -314,4 +329,4 @@ function gameStart(){
 }
 
 // save user data
-function savelevelData () { c.l("saveIt");localStorage.setItem(storrageId, JSON.stringify(levelData)); }
+function saveLevelData() { c.l("saveIt");localStorage.setItem(storrageId, JSON.stringify(levelData)); }
