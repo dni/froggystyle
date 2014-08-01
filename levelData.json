@@ -2,18 +2,13 @@
 	"mountains": {
 		"level1": {	},
 		"level2": {	},
-		"level3": {	},
-		"level4": {	},
-		"level5": {	},
-		"level6": {	}
+		"level3": {	}
 	},
 	"terrarium": {
-		"level1": {	},
-		"level2": {	},
-		"level3": {	},
-		"level4": {	},
-		"level5": {	},
-		"level6": {	}
-	}
+		"level1": {	}
+	},
+	"cave": {
+		"level1": {	}
 
+	}
 }

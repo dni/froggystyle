@@ -1,4 +1,5 @@
 var player;
+var game;
 var layer, ll;
 var facing = 'left';
 var jumpTimer = 0;
@@ -17,23 +18,29 @@ var jumpsEl = null;
 var levelEl = null;
 var startTime = 0;
 
-var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'froggystyle', { preload: preload, create: create, update: update, render: render });
-
-
 function preload(world, levelNr) {
+	for(world in levelData){
+		if (levelData.hasOwnProperty(world)) {
+			for(lvl in levelData[world]){
+			    //level = world+"/level"+(i)
+    	        if (levelData[world].hasOwnProperty(lvl)) {
+		    		level = world+"/"+lvl;
+				    game.load.tilemap('tilemap'+level, '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
+				    game.load.image('bg'+level, '/levels/'+level+'/images/background.jpg');
+		        }
+
+			}
+		}
+	}
     game.load.spritesheet('tileset', '/characters/ground_1x1.png', 32, 32);
     game.load.spritesheet('frog', '/characters/frog100px133px.png', 133, 100);
     game.load.spritesheet('fly', '/characters/fly.png', 133, 56);
     game.load.image('arrow', '/characters/arrow.png');
-    preloadLevel();
 }
 
 function preloadLevel(world, levelNr){
-	if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
-    else if (typeof(levelNr)==="number"){level = world+"/"+levelNr}
-    else {level = "mountains/level2"}
-    game.load.tilemap('tilemap'+level, '/levels/'+level+'/level.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('bg'+level, '/levels/'+level+'/images/background.jpg');
+	//if(window.location.hash.length>0){ level = window.location.hash.replace("#", "");}
+    //else if (typeof(levelNr)==="number"){level = world+"/"+levelNr}
 }
 
 function stickToIt(pl, wall){
@@ -42,8 +49,7 @@ function stickToIt(pl, wall){
 	player.body.setZeroVelocity();
 	player.body.setZeroForce();
 	player.body.setZeroRotation();
-	player.body.setZeroRotation();
-	player.body.rotation=0
+	player.body.rotation = 0
 	game.physics.p2.gravity.y = 0;
 };
 
@@ -62,7 +68,6 @@ var resetLevel = function(){
 
 var nextLevel = function(){
 	saveLevelValues();
-	saveLevelData();
 	generateNewLevel();
 	c.l("hurray, you finished the level");
 };
@@ -74,13 +79,17 @@ function setStartTime(){ startTime = Date.now(); }
 
 function saveLevelValues(){
 	lvlData = level.split("/");
-	lvlNr = lvlData[0];
-	world = lvlData[1];
-	levelData[world][lvlNr].time = startTime;
+	world = lvlData[0];
+	lvlNr = lvlData[1];
+	c.l(lvlData);
+	timeNeeded = ((Date.now() - startTime))>>0;
+	timeNeededOld = levelData[world][lvlNr].time || null
+	if (timeNeeded<timeNeededOld || !timeNeededOld){ levelData[world][lvlNr].time = timeNeeded;}
 	levelData[world][lvlNr].finished = true;
 }
 
 function startJump(){
+	c.l("HE SHOULD JUMP");
 	player.play("jump");
 	setTimeout(function(){ launch(); }, 400);
 }
@@ -88,6 +97,7 @@ function startJump(){
 function create() {
 	jumpsEl = document.getElementById("jumps");
 	levelEl = document.getElementById("level");
+	level = "cave/level1";
 	setJumps();
 	setLevel();
 	setStartTime();
@@ -176,7 +186,7 @@ function createPlayerAndFly(){
 
 	game.camera.follow(player);
 	player.events.onInputDown.add(startJump, this);
-	player.events.onInputUp.add(launch, this);
+	//player.events.onInputUp.add(launch, this);
 
 }
 
@@ -215,13 +225,6 @@ function update() {
 	flyAniCntY += 0.125;
     //goalFly.body.x += Math.sin(flyAniCntX)*10;
     //goalFly.body.y += Math.sin(flyAniCntY)*10;
-}
-
-function render() {
-	game.debug.body(goalFly);
-	game.debug.body(playerCG);
-	game.debug.body(player);
-	game.debug.body(player.body);
 }
 
 
@@ -291,7 +294,7 @@ var generateNewLevel = function () {
 storrageId = "froggystyleHighscore"
 
 //levelData = JSON.parse(localStorage.getItem(storrageId)) || null
-if (!levelData){ loadXMLDoc("levelData.json"); }
+if (!levelData){ loadXMLDoc("levelData.json"); } else { gameStart();}
 
 function loadXMLDoc(file){
 	if (window.XMLHttpRequest){ xmlhttp=new XMLHttpRequest(); } else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
@@ -299,12 +302,18 @@ function loadXMLDoc(file){
 	  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 	    	levelData = xmlhttp.responseText;
 	    	levelData = JSON.parse(levelData);
+	    	gameStart();
 	  }
 	}
 	xmlhttp.open("GET", file, true);
 	xmlhttp.send();
 }
 
+// start game
+
+function gameStart(){
+	game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'froggystyle', { preload: preload, create: create, update: update });
+;}
+
 // save user data
-function savelevelData () { console.log("saveIt");localStorage.setItem(storrageId, JSON.stringify(levelData)); }
-window.onbeforeunload = savelevelData;
+function savelevelData () { c.l("saveIt");localStorage.setItem(storrageId, JSON.stringify(levelData)); }
