@@ -5,10 +5,34 @@
 		"level3": {	}
 	},
 	"terrarium": {
-		"level1": {	}
+		"level1": {	},
+		"level2": {	},
+		"level3": {	},
+		"level4": {	},
+		"level5": {	},
+		"level6": {	}
 	},
 	"cave": {
-		"level1": {	}
-
+		"level1": {	},
+		"level2": {	},
+		"level3": {	},
+		"level4": {	},
+		"level5": {	},
+		"level6": {	}
+	},
+	"jungle": {
+		"level1": {	},
+		"level2": {	},
+		"level3": {	},
+		"level4": {	},
+		"level5": {	},
+		"level6": {	}
+	},
+"luzifer": {
+		"level1": {	},
+		"level2": {	},
+		"level3": {	},
+		"level4": {	},
+		"level5": {	}
 	}
 }

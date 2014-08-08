@@ -12,7 +12,7 @@ var walls, enemys, startPoint, goalPoint;
 var flying = false;
 var wallsCG, playerCG, goalCG, enemyCG;
 var jumps = 999;
-var level = "cave/level1";
+var level = "terrarium/level2";
 var levelData = "";
 var jumpsEl = null;
 var levelEl = null;
@@ -21,7 +21,7 @@ var startTime = 0;
 var levelMap = [];
 var levelMapState = 0;
 
-var DEBUG = false;
+var DEBUG = true;
 
 function preload(world, levelNr) {
 	for(world in levelData){
@@ -130,7 +130,7 @@ function create() {
 
 	walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 	enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
-	bounces = game.physics.p2.convertCollisionObjects(map, "bounce", false) || null;
+	bounces = game.physics.p2.convertCollisionObjects(map, "bounce", true) || null;
 
  	startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
  	goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];
@@ -272,7 +272,7 @@ var nextLevel = function () {
 
 		walls = game.physics.p2.convertCollisionObjects(map, "collision", true);
 		enemys = game.physics.p2.convertCollisionObjects(map, "enemy", true);
-		bounces = game.physics.p2.convertCollisionObjects(map, "bounce", false) || null;
+		bounces = game.physics.p2.convertCollisionObjects(map, "bounce", true) || null;
 
 		startPoint = game.physics.p2.convertCollisionObjects(map, 'start')[0];
 		goalPoint = game.physics.p2.convertCollisionObjects(map, 'goal')[0];

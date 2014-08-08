@@ -2,7 +2,7 @@
  "layers":[
         {
          "height":25,
-         "image":"background.jpg",
+         "image":"",
          "name":"bg",
          "opacity":1,
          "type":"imagelayer",
@@ -551,7 +551,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "width":63,
          "x":0,
          "y":0
